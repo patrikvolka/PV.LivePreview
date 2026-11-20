@@ -6,7 +6,11 @@ Modul pro [Orchard Core](https://orchardcore.net), který přidává responzivn�
 
 Náhled obsah nikdy neukládá ani nepublikuje.
 
+![Editor obsahu s panelem živého náhledu vpravo](docs/editor-with-live-preview.jpg)
+
 ## Funkce
+
+![Panel živého náhledu – toolbar, informační lišta a maketa laptopu](docs/live-preview-panel.jpg)
 
 - **Živá aktualizace bez bliknutí** – stránka se znovu vykreslí chvíli po každé změně ve formuláři (i ve WYSIWYG editorech jako TinyMCE) a zobrazí se až po úplném načtení; pozice posunu zůstává.
 - **Posun na změny** – náhled se posune k prvnímu změněnému prvku a krátce ho zvýrazní.

@@ -6,7 +6,11 @@ An [Orchard Core](https://orchardcore.net) module that adds a responsive **live 
 
 The content is never saved or published by the preview.
 
+![Content editor with the live preview panel on the right](docs/editor-with-live-preview.jpg)
+
 ## Features
+
+![Live preview panel – toolbar, info bar and a laptop mock-up](docs/live-preview-panel.jpg)
 
 - **Live, flicker-free updates** – the page is re-rendered shortly after any change in the form (including WYSIWYG editors such as TinyMCE) and swapped in only when fully loaded; the scroll position is kept.
 - **Scroll to changes** – the preview scrolls to the first changed element and briefly highlights it.
