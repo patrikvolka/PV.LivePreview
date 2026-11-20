@@ -1,0 +1,158 @@
+@model PV.LivePreview.ViewModels.LivePreviewViewModel
+@using System.Text.Json
+@* T (IViewLocalizer) poskytuje přímo OrchardCore RazorPage – vlastní @inject není potřeba *@
+@{
+    var renderEndpoint = Url.Content("~/api/pv-live-preview/render");
+    var frameEndpoint = Url.Content("~/api/pv-live-preview/frame/");
+    var windowEndpoint = Url.Content("~/api/pv-live-preview/window");
+
+    // Lokalizované texty pro JavaScript
+    var translations = new Dictionary<string, string>
+    {
+        ["fluidTitle"] = T["Fluid (Responsive)"].Value,
+        ["mobilePortraitTitle"] = T["Mobile (375x667)"].Value,
+        ["tabletPortraitTitle"] = T["Tablet (768x1024)"].Value,
+        ["laptopTitle"] = T["Laptop (1366x768)"].Value,
+        ["desktopTitle"] = T["Desktop (1920x1080)"].Value,
+        ["customTitle"] = T["Custom size"].Value,
+        ["customWidthLabel"] = T["Width"].Value,
+        ["customHeightLabel"] = T["Height"].Value,
+        ["rotateTitle"] = T["Rotate (portrait / landscape)"].Value,
+        ["scaleTitle"] = T["Scale: fit to panel / 100 %"].Value,
+        ["displayTypeTitle"] = T["Display type: Detail / Summary (how the item looks in a list)"].Value,
+        ["displayDetail"] = T["Detail"].Value,
+        ["displaySummary"] = T["Summary"].Value,
+        ["infoRenderedTitle"] = T["Time of the last preview update"].Value,
+        ["infoServer"] = T["Server"].Value,
+        ["infoServerTitle"] = T["Server response time – from sending the form to receiving the rendered page"].Value,
+        ["infoLoad"] = T["Load"].Value,
+        ["infoLoadTitle"] = T["Page load time in the preview – styles, scripts and images of the theme"].Value,
+        ["infoCultureTitle"] = T["Language (culture) in which the preview was rendered – the culture of the content item"].Value,
+        ["infoViewportTitle"] =T["Viewport of the preview (width × height in CSS pixels) and its current scale"].Value,
+        ["fullscreenTitle"] = T["Fullscreen"].Value,
+        ["exitFullscreenTitle"] = T["Exit Fullscreen"].Value,
+        ["hidePreviewTitle"] = T["Hide Live Preview"].Value,
+        ["resizeTitle"] = T["Drag to resize, double-click to reset"].Value,
+        ["showLivePreview"] = T["Show Live Preview"].Value,
+        ["loading"] = T["Loading preview..."].Value,
+        ["errorOccurred"] = T["An error occurred while loading the preview."].Value,
+        ["sessionExpired"] = T["Your session has expired. Reload the page and sign in again."].Value,
+        ["accessDenied"] = T["You do not have permission to preview this content."].Value,
+        ["helpTitle"] = T["Help"].Value,
+        ["autoScrollTitle"] = T["Scroll to changes"].Value,
+        ["authorLinkTitle"] = T["Visit the author’s website"].Value,
+        ["detachTitle"] =T["Open in a separate window"].Value,
+        ["detachedMessage"] = T["Live preview is open in a separate window."].Value,
+        ["focusWindow"] = T["Show window"].Value,
+        ["attachPreview"] = T["Return to panel"].Value,
+        ["windowBlocked"] = T["The browser blocked the new window. Allow pop-up windows for this site."].Value,
+        ["formSubmitBlocked"] =T["Form submission is disabled in the preview."].Value,
+        ["validationErrors"] = T["The content contains errors and cannot be saved in this state:"].Value,
+        ["autoUpdateTitle"] = T["Automatic update"].Value,
+        ["refreshTitle"] = T["Refresh preview"].Value,
+        ["refreshPendingTitle"] = T["Refresh preview – there are changes not shown yet"].Value
+    };
+
+    var isSidePosition = Model.Position == "left" || Model.Position == "right";
+
+    var translationsJson = JsonSerializer.Serialize(translations);
+
+    // Nastavení typu obsahu pro skript (bod 6 roadmapy). Null Devices = všechna vestavěná zařízení.
+    var settings = Model.Settings;
+    var settingsJson = JsonSerializer.Serialize(new
+    {
+        defaultDevice = settings.DefaultDevice,
+        devices = settings.Devices,
+        customDevices = settings.CustomDevices.Select(d => new { name = d.Name, width = d.Width, height = d.Height }),
+        updateDelay = settings.UpdateDelay,
+        startHidden = settings.StartHidden,
+    });
+}
+
+@* Styly a skript jsou statické soubory z wwwroot (ResourceManagementOptionsConfiguration).
+   Resource Manager je na stránku vloží jen jednou, prohlížeč je cachuje a projdou i přes CSP.
+   Skript najde všechny markery podle atributu data-pv-live-preview a vše čte z jejich data-* atributů. *@
+<style asp-name="PV.LivePreview"></style>
+<script asp-name="PV.LivePreview" at="Foot"></script>
+
+<div data-pv-live-preview
+     data-position="@Model.Position"
+     data-render-endpoint="@renderEndpoint"
+     data-frame-endpoint="@frameEndpoint"
+     data-window-endpoint="@windowEndpoint"
+     data-content-type="@Model.ContentType"
+     data-content-item-id="@Model.ContentItemId"
+     data-translations="@translationsJson"
+     data-settings="@settingsJson">
+
+    @* Obsah okna nápovědy. Skript ho naklonuje do <dialog> vloženého do body
+       (ne do formuláře) a otevře tlačítkem „?“ v nástrojové liště náhledu. *@
+    <template class="pv-lp-help-template">
+        <dialog class="pv-lp-help" aria-label="@T["Live Preview – Help"]">
+            <div class="pv-lp-help-content">
+                <div class="pv-lp-help-header">
+                    <h5 class="mb-0"><i class="fas fa-question-circle me-2"></i>@T["Live Preview – Help"]</h5>
+                    <button type="button" class="btn-close pv-lp-help-close" aria-label="@T["Close"]"></button>
+                </div>
+                <div class="pv-lp-help-body">
+                    <p>@T["The preview shows the edited content as it will look on the website. It refreshes automatically shortly after you change any field – you do not need to save the content. The preview itself never saves or publishes anything."]</p>
+
+                    <p>@T["Links in the preview open in a new tab, so the preview stays in place. Links to a part of the page only scroll the preview. Forms in the preview cannot be submitted."]</p>
+                    <p>@T["If the content contains errors (for example, the URL is already used by another item), a yellow bar with their list appears above the preview. The preview is still rendered, but the content cannot be saved until the errors are fixed."]</p>
+
+                    <p>@T["The bar under the toolbar shows the time of the last update, the server response time, the page load time in the preview and the viewport with its scale. Times that are too long are highlighted in red – useful when tuning the performance of the theme templates."]</p>
+                    <p>@T["Multilingual content is rendered in the language of the content item, so the theme texts match the language of the page. The language is shown in the bar with the globe icon."]</p>
+
+                    <h6>@T["Devices"]</h6>
+                    <ul class="pv-lp-help-list">
+                        <li><span class="pv-lp-help-icon"><i class="fas fa-expand"></i></span>@T["Fluid – the page fills the whole preview panel."]</li>
+                        <li><span class="pv-lp-help-icon"><i class="fas fa-mobile-alt"></i> <i class="fas fa-tablet-alt"></i> <i class="fas fa-laptop"></i> <i class="fas fa-desktop"></i></span>@T["Mobile, tablet, laptop and desktop – the page is rendered at the exact resolution of the device. If the device does not fit into the panel, it is scaled down."]</li>
+                        @if (settings.CustomDevices.Count > 0)
+                        {
+                            <li><span class="pv-lp-help-icon"><i class="fas fa-mobile-alt"></i> <small>Aa</small></span>@T["Devices with a name – custom devices defined for this content type by the administrator."]</li>
+                        }
+                        <li><span class="pv-lp-help-icon"><i class="fas fa-ruler-combined"></i></span>@T["Custom size – enter the width and height of the device you want to test, for example 412 × 915."]</li>
+                        <li><span class="pv-lp-help-icon"><i class="fas fa-redo-alt"></i></span>@T["Rotate – switches mobile and tablet between portrait and landscape; for a custom size it swaps the width and height."]</li>
+                        <li><span class="pv-lp-help-icon"><i class="fas fa-file-alt"></i> <i class="fas fa-th-list"></i></span>@T["Detail / Summary – switches between the detail page of the item and its summary, i.e. how the item looks in a list (for example an article card on a blog)."]</li>
+                        <li><span class="pv-lp-help-icon"><i class="fas fa-search"></i> 62 %</span>@T["Scale – shows the current scale of the device. Click to switch between fitting the device into the panel and its real size (100 %) with scrollbars, which is useful for checking details."]</li>
+                    </ul>
+
+                    <h6>@T["Panel"]</h6>
+                    <ul class="pv-lp-help-list">
+                        <li><span class="pv-lp-help-icon"><i class="fas fa-bolt"></i></span>@T["Automatic update – when turned off, the preview is refreshed only with the Refresh button. Useful for demanding pages and when writing long texts."]</li>
+                        <li><span class="pv-lp-help-icon"><i class="fas fa-sync-alt"></i></span>@T["Refresh – renders the preview again. With automatic update turned off, the button turns yellow when the form contains changes the preview does not show yet."]</li>
+                        <li><span class="pv-lp-help-icon"><i class="fas fa-crosshairs"></i></span>@T["Scroll to changes – after each update the preview scrolls to the first changed place and briefly highlights it. Click the button to turn it off or on."]</li>
+                        <li><span class="pv-lp-help-icon"><i class="fas fa-arrows-alt"></i></span>@T["Fullscreen – expands the preview over the whole screen. Press Esc or the same button to return."]</li>
+                        <li><span class="pv-lp-help-icon"><i class="fas fa-external-link-alt"></i></span>@T["Separate window – opens the preview in its own window, for example on a second monitor. The viewport is the size of the window, the form gets the full width. Closing the window returns the preview to the panel."]</li>
+                        <li><span class="pv-lp-help-icon"><i class="fas fa-eye-slash"></i></span>@T["Hide – hides the preview and gives the form the full width. Bring it back with the Show Live Preview button in the bottom right corner."]</li>
+                        @if (isSidePosition)
+                        {
+                            <li><span class="pv-lp-help-icon"><i class="fas fa-arrows-alt-h"></i></span>@T["Drag the edge of the panel next to the form to change its width, double-click it to restore the default. The width is remembered in this browser."]</li>
+                        }
+                        else
+                        {
+                            <li><span class="pv-lp-help-icon"><i class="fas fa-arrows-alt-v"></i></span>@T["Drag the bottom right corner of the panel to change its height."]</li>
+                        }
+                    </ul>
+
+                    <h6>@T["Keyboard shortcuts"]</h6>
+                    <table class="table table-sm mb-0 pv-lp-help-shortcuts">
+                        <tbody>
+                            <tr><td><kbd>Alt+Shift+L</kbd></td><td>@T["Hide / show the preview"]</td></tr>
+                            <tr><td><kbd>Alt+Shift+1</kbd> … <kbd>Alt+Shift+9</kbd></td><td>@T["Switch the device (in the order of the toolbar buttons)"]</td></tr>
+                            <tr><td><kbd>Alt+Shift+O</kbd></td><td>@T["Rotate the device"]</td></tr>
+                            <tr><td><kbd>Alt+Shift+0</kbd></td><td>@T["Scale: fit to panel / 100 %"]</td></tr>
+                            <tr><td><kbd>Alt+Shift+D</kbd></td><td>@T["Display type: Detail / Summary"]</td></tr>
+                            <tr><td><kbd>Alt+Shift+Enter</kbd></td><td>@T["Fullscreen on / off"]</td></tr>
+                            <tr><td><kbd>Alt+Shift+R</kbd></td><td>@T["Refresh preview"]</td></tr>
+                            <tr><td><kbd>Alt+Shift+W</kbd></td><td>@T["Separate window: open / return to the panel"]</td></tr>
+                            <tr><td><kbd>Esc</kbd></td><td>@T["Exit fullscreen"]</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="mt-3 mb-0 text-body-secondary">@T["Your choices are remembered in this browser: the device and its orientation (separately for each content type), the custom size, the scale, the display type (separately for each content type), whether the preview is hidden or in fullscreen, automatic update and scrolling to changes."]</p>
+                </div>
+            </div>
+        </dialog>
+    </template>
+</div>

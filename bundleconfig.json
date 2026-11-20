@@ -1,0 +1,26 @@
+[
+  {
+    "outputFileName": "wwwroot/css/pv-live-preview.min.css",
+    "inputFiles": [
+      "wwwroot/css/pv-live-preview.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/pv-live-preview.min.js",
+    "inputFiles": [
+      "wwwroot/js/pv-live-preview.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/pv-live-preview-admin.min.js",
+    "inputFiles": [
+      "wwwroot/js/pv-live-preview-admin.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/pv-live-preview-window.min.js",
+    "inputFiles": [
+      "wwwroot/js/pv-live-preview-window.js"
+    ]
+  }
+]

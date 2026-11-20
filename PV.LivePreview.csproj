@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+	  <TargetFramework>net10.0</TargetFramework>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <Nullable>enable</Nullable>
+	  <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+	  <AssemblyName>PV.LivePreview</AssemblyName>
+	  <Product>PV.LivePreview</Product>
+	  <!-- Při změně verze aktualizujte i Manifest.cs a ResourceManagementOptionsConfiguration.cs -->
+	  <Version>3.0.1</Version>
+	  <AssemblyVersion>3.0.1.0</AssemblyVersion>
+	  <FileVersion>3.0.1.0</FileVersion>
+	  <InformationalVersion>3.0.1</InformationalVersion>
+
+	  <Company>Patrik Volka</Company>
+	  <Authors>Patrik Volka</Authors>
+	  <Copyright>Copyright © 2023 - 2026 Patrik Volka</Copyright>
+	  <Description>OrchardCore modul, který integruje responzivní živý náhled přímo do editační stránky obsahu.</Description>
+
+	  <!-- Metadata pro GitHub / NuGet -->
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <PackageTags>orchardcore;orchard-core;cms;live-preview;preview;module</PackageTags>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<!-- Soubory repozitáře a interní poznámky – nepatří mezi assety modulu
+		     (OrchardCore.Module.Targets bere jako asset každý EmbeddedResource **\*) -->
+		<EmbeddedResource Remove="*.md;LICENSE;bundleconfig.json;.gitignore;.gitattributes;docs\**" />
+		<None Include="*.md;LICENSE;bundleconfig.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- Minifikace CSS a JS při buildu podle bundleconfig.json (stejně jako PV.MyTheme).
+		     Vznikají *.min.css / *.min.js vedle zdrojových souborů ve wwwroot. -->
+		<PackageReference Include="BuildBundlerMinifier2022" Version="2.9.11" />
+		<!-- Atribut [Admin] pro stránku hromadného nastavení -->
+		<PackageReference Include="OrchardCore.Admin.Abstractions" Version="3.0.1" />
+		<PackageReference Include="OrchardCore.ContentManagement" Version="3.0.1" />
+		<PackageReference Include="OrchardCore.Contents" Version="3.0.1" />
+		<PackageReference Include="OrchardCore.DisplayManagement" Version="3.0.1" />
+		<PackageReference Include="OrchardCore.Module.Targets" Version="3.0.1" />
+		<!-- Položka v admin menu (AdminNavigationProvider) -->
+		<PackageReference Include="OrchardCore.Navigation.Core" Version="3.0.1" />
+		<PackageReference Include="OrchardCore.ResourceManagement" Version="3.0.1" />
+	</ItemGroup>
+
+</Project>

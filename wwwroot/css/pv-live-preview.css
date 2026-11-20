@@ -1,0 +1,678 @@
+﻿/*
+ * PV.LivePreview – styly integrovaného živého náhledu v editaci obsahu.
+ * Registrováno v ResourceManagementOptionsConfiguration jako stylesheet "PV.LivePreview".
+ */
+
+/* 1. ZÁKLADNÍ ROZLOŽENÍ PANELU
+   Formulář se v DOM nepřesouvá (přesun by znovu načetl iframy editorů jako TinyMCE).
+   Panel se vloží jako poslední potomek formuláře a rozložení zajistí CSS grid
+   přímo na elementu form: obsah formuláře v jednom sloupci, panel ve druhém přes všechny řádky. */
+form.pv-lp-form.pv-lp-left:not(.pv-lp-collapsed),
+form.pv-lp-form.pv-lp-right:not(.pv-lp-collapsed) {
+    display: grid;
+    column-gap: 20px;
+    row-gap: 0;
+    align-items: start;
+}
+
+form.pv-lp-form.pv-lp-right:not(.pv-lp-collapsed) {
+    /* --pv-lp-panel-width nastavuje táhlo (JS); bez něj se šířka dělí napůl */
+    grid-template-columns: minmax(0, 1fr) var(--pv-lp-panel-width, minmax(300px, 1fr));
+}
+
+    form.pv-lp-form.pv-lp-right:not(.pv-lp-collapsed) > :not(.pv-live-preview-panel) {
+        grid-column: 1;
+    }
+
+    form.pv-lp-form.pv-lp-right:not(.pv-lp-collapsed) > .pv-live-preview-panel {
+        grid-column: 2;
+    }
+
+form.pv-lp-form.pv-lp-left:not(.pv-lp-collapsed) {
+    grid-template-columns: var(--pv-lp-panel-width, minmax(300px, 1fr)) minmax(0, 1fr);
+}
+
+    form.pv-lp-form.pv-lp-left:not(.pv-lp-collapsed) > :not(.pv-live-preview-panel) {
+        grid-column: 2;
+    }
+
+    form.pv-lp-form.pv-lp-left:not(.pv-lp-collapsed) > .pv-live-preview-panel {
+        grid-column: 1;
+    }
+
+/* 2. PANEL NÁHLEDU A STAVY */
+.pv-live-preview-panel {
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--bs-border-color);
+    border-radius: .25rem;
+    background: #eef1f5;
+    /* Panel zůstává při posouvání formuláře na místě (sticky). Admin téma OC (TheAdmin)
+       má pevně ukotvenou horní lištu o výšce --oc-top-nav-height – bez jejího započtení
+       by panel zajel pod ni a vypadalo by to, že se posouvá se stránkou.
+       Výška = viditelná plocha pod lištou (s 20px okrajem nahoře i dole), aby byl
+       při přichycení vidět celý panel včetně spodku. */
+    --pv-lp-sticky-top: calc(var(--oc-top-nav-height, 0px) + 20px);
+    height: calc(100vh - var(--pv-lp-sticky-top) - 20px);
+    min-height: 400px;
+    position: sticky;
+    top: var(--pv-lp-sticky-top);
+    z-index: 100;
+    /* Šířku u pozice vlevo/vpravo mění vlastní táhlo – nativní CSS resize
+       v gridu nefunguje (sloupec 1fr ručně nastavenou šířku přebije). */
+    overflow: hidden;
+    transition: opacity 0.3s ease;
+}
+
+form.pv-lp-bottom > .pv-live-preview-panel {
+    margin-top: 20px;
+    height: 70vh;
+    position: static;
+    /* U pozice dole nativní resize funguje (blokový prvek s pevnou výškou) */
+    resize: vertical;
+}
+
+/* Táhlo pro změnu šířky panelu – na vnitřní hraně panelu (u formuláře) */
+.pv-lp-resizer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 8px;
+    z-index: 4;
+    cursor: col-resize;
+    touch-action: none;
+    background: transparent;
+    transition: background-color 0.15s ease;
+}
+
+    .pv-lp-resizer:hover,
+    form.pv-lp-resizing .pv-lp-resizer {
+        background: var(--bs-primary, #0d6efd);
+        opacity: .5;
+    }
+
+form.pv-lp-right .pv-lp-resizer {
+    left: 0;
+}
+
+form.pv-lp-left .pv-lp-resizer {
+    right: 0;
+}
+
+.pv-live-preview-panel.pv-fullscreen .pv-lp-resizer {
+    display: none;
+}
+
+/* Během tažení: iframe nesmí „spolknout“ události myši a text se nemá označovat */
+form.pv-lp-resizing {
+    user-select: none;
+    cursor: col-resize;
+}
+
+    form.pv-lp-resizing .pv-live-preview-iframe {
+        pointer-events: none;
+    }
+
+/* ARCHITEKTONICKÝ UX FIX: Třída pro Fullscreen režim */
+.pv-live-preview-panel.pv-fullscreen {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+    z-index: 99999 !important; /* Překryje celou administraci Orchard Core */
+    margin: 0 !important;
+    border-radius: 0 !important;
+    resize: none !important;
+}
+
+.pv-live-preview-toolbar {
+    display: flex;
+    /* Při úzkém panelu se tlačítka zalomí na další řádek, místo aby je panel ořízl */
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 10px;
+    background: #fff;
+    border-bottom: 1px solid var(--bs-border-color);
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+/* Informační lišta pod toolbarem (čas, odezva serveru, načtení, viewport) */
+.pv-live-preview-info {
+    flex: 0 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2px 16px;
+    padding: 3px 10px;
+    background: var(--bs-tertiary-bg, #f8f9fa);
+    color: var(--bs-secondary-color, #6c757d);
+    border-bottom: 1px solid var(--bs-border-color, #dee2e6);
+    font-size: 12px;
+    /* Číslice stejné šířky – hodnoty při změně neposkakují */
+    font-variant-numeric: tabular-nums;
+    z-index: 2;
+}
+
+    .pv-lp-info-item {
+        white-space: nowrap;
+        cursor: default;
+    }
+
+    .pv-live-preview-info .is-slow {
+        color: var(--bs-danger-text-emphasis, #b02a37);
+        font-weight: 600;
+    }
+
+/* Validační chyby – pruh mezi toolbarem a plátnem (nepřekrývá náhled).
+   Zobrazení řídí atribut hidden, display zde proto nenastavujeme. */
+.pv-live-preview-validation {
+    flex: 0 0 auto;
+    max-height: 30%;
+    overflow-y: auto;
+    padding: 8px 14px;
+    background: var(--bs-warning-bg-subtle, #fff3cd);
+    color: var(--bs-warning-text-emphasis, #664d03);
+    border-bottom: 1px solid var(--bs-warning-border-subtle, #ffe69c);
+    font-size: 13px;
+    z-index: 2;
+}
+
+    .pv-live-preview-validation .pv-lp-validation-title {
+        font-weight: 600;
+    }
+
+    .pv-live-preview-validation ul {
+        margin: 4px 0 0;
+        padding-left: 1.5rem;
+    }
+
+/* Tlačítko vlastního zařízení z nastavení typu obsahu – ikona + zkrácený název
+   (celý název a rozměr jsou v tooltipu) */
+.pv-lp-device-label {
+    display: inline-block;
+    max-width: 7em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: bottom;
+    font-size: 12px;
+}
+
+/* Pole pro vlastní rozměr v toolbaru (zobrazení řídí atribut hidden) */
+.pv-lp-custom-size {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--bs-secondary-color, #6c757d);
+}
+
+    .pv-lp-custom-size input {
+        width: 4.75rem;
+        padding-left: 6px;
+        padding-right: 2px;
+        text-align: right;
+    }
+
+.pv-toolbar-separator {
+    width: 1px;
+    height: 20px;
+    background: #ddd;
+    margin: 0 10px;
+}
+
+/* OKNO NÁPOVĚDY (nativní <dialog>, otevírá se přes showModal) */
+.pv-lp-help {
+    width: min(560px, calc(100vw - 32px));
+    max-height: calc(100vh - 64px);
+    /* Rámeček se započítá do max-height – jinak by dialog přetekl o pár pixelů
+       a vedle posuvníku těla by se objevil druhý posuvník celého dialogu */
+    box-sizing: border-box;
+    /* Posouvá se jen tělo nápovědy, nikdy celý dialog */
+    overflow: hidden;
+    padding: 0;
+    border: 1px solid var(--bs-border-color, #dee2e6);
+    border-radius: .5rem;
+    background: var(--bs-body-bg, #fff);
+    color: var(--bs-body-color, #212529);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+    .pv-lp-help::backdrop {
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    /* Jen otevřený dialog – zavřený musí zůstat display: none z výchozích stylů prohlížeče */
+    .pv-lp-help[open] {
+        display: flex;
+        flex-direction: column;
+    }
+
+/* Obsah vyplňuje celý dialog – klik mimo něj (na ::backdrop) dialog zavře.
+   min-height: 0 dovolí flex položce zmenšit se pod výšku obsahu (výchozí je auto). */
+.pv-lp-help-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.pv-lp-help-header {
+    flex: 0 0 auto;
+}
+
+.pv-lp-help-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--bs-border-color, #dee2e6);
+}
+
+.pv-lp-help-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 1rem 1.25rem;
+    overflow-y: auto;
+    font-size: .9rem;
+}
+
+    .pv-lp-help-body h6 {
+        margin-top: 1rem;
+        font-weight: 600;
+    }
+
+.pv-lp-help-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+    .pv-lp-help-list li {
+        display: flex;
+        gap: .75rem;
+        padding: .35rem 0;
+    }
+
+.pv-lp-help-shortcuts td:first-child {
+    width: 1%;
+    white-space: nowrap;
+    padding-right: 1rem;
+}
+
+.pv-lp-help-icon {
+    flex: 0 0 5.5rem;
+    text-align: center;
+    color: var(--bs-secondary-color, #6c757d);
+    white-space: nowrap;
+}
+
+/* PLOVOUCÍ TLAČÍTKO ZOBRAZIT */
+.pv-floating-toggle {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+    /* Zobrazení řídí atribut hidden (JS) – display zde nenastavujeme, Bootstrap .btn by ho stejně přebil */
+    border-radius: 50px;
+    padding: 12px 24px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* 3. PLÁTNO A CENTROVÁNÍ
+   Stage = neposouvající se obal plátna, ke kterému jsou ukotvené stavová zpráva
+   a upozornění. Plátno uvnitř se v měřítku 100 % posouvá. */
+.pv-live-preview-stage {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    overflow: hidden;
+}
+
+.pv-live-preview-canvas {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Měřítko 100 %: maketa ve skutečné velikosti, plátno se posouvá.
+   Centrování přes flex (justify-content/align-items: center) by u makety větší než
+   plátno ořízlo levý a horní okraj tak, že by k nim nešlo doscrollovat.
+   margin: auto centruje jen pokud je místo, jinak maketa začíná u okraje. */
+.pv-live-preview-canvas.pv-lp-actual-size {
+    overflow: auto;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+    .pv-live-preview-canvas.pv-lp-actual-size .pv-device-wrapper {
+        margin: auto;
+        padding: 20px;
+        flex-shrink: 0;
+    }
+
+/* Popisek měřítka má pevnou šířku, aby tlačítko při změně čísla neposkakovalo */
+.pv-lp-scale-label {
+    display: inline-block;
+    min-width: 3.2em;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Stavová zpráva nad náhledem (načítání / chyba) */
+.pv-live-preview-status {
+    display: none;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    max-width: calc(100% - 20px);
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 13px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    pointer-events: none;
+}
+
+    .pv-live-preview-status.is-loading {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        color: var(--bs-secondary-color, #6c757d);
+    }
+
+    .pv-live-preview-status.is-error {
+        display: block;
+        border-radius: .375rem;
+        background: var(--bs-danger, #dc3545);
+        color: #fff;
+        pointer-events: auto;
+    }
+
+/* Podpis autora v pravém dolním rohu plochy náhledu. Je ve stage (neposouvá se ani
+   v měřítku 100 %) a nad plátnem; nenápadný, plně viditelný až při najetí myší. */
+.pv-lp-credit {
+    position: absolute;
+    right: 10px;
+    bottom: 6px;
+    z-index: 3;
+    padding: 2px 8px;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.7);
+    color: #6c757d;
+    font-size: 11px;
+    line-height: 1.4;
+    white-space: nowrap;
+    opacity: .75;
+    transition: opacity 0.15s ease;
+}
+
+    .pv-lp-credit:hover,
+    .pv-lp-credit:focus-within {
+        opacity: 1;
+    }
+
+    .pv-lp-credit a {
+        color: inherit;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+        .pv-lp-credit a:hover,
+        .pv-lp-credit a:focus {
+            color: var(--bs-primary, #0d6efd);
+            text-decoration: underline;
+        }
+
+/* Krátké upozornění dole nad náhledem (např. zablokované odeslání formuláře) */
+.pv-live-preview-notice {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translate(-50%, 8px);
+    z-index: 3;
+    max-width: calc(100% - 20px);
+    padding: 8px 16px;
+    border-radius: .375rem;
+    background: rgba(33, 37, 41, 0.92);
+    color: #fff;
+    font-size: 13px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+    .pv-live-preview-notice.is-visible {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+
+.pv-device-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-origin: center center;
+    transition: transform 0.2s ease-out;
+}
+
+/* 4. MAKETY ZAŘÍZENÍ */
+.pv-device-mockup {
+    /* Rozměry maket = rozměry viewportu; rámeček (tělo zařízení) se přičítá navíc.
+       Bootstrap globálně nastavuje border-box, který by rámeček odečetl z viewportu. */
+    box-sizing: content-box;
+    position: relative;
+    background: #fff;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Dva iframy přes sebe (aktualizace bez bliknutí): nová verze se načítá do skrytého
+   a po načtení se prohodí. Skrytý má visibility: hidden, ne display: none –
+   musí mít skutečné rozměry viewportu, jinak by skripty a media queries tématu
+   (slidery, lazy-load apod.) při inicializaci počítaly s nulovou velikostí. */
+.pv-live-preview-iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #fff;
+    max-width: none !important;
+    margin: 0;
+    padding: 0;
+    display: block;
+    visibility: hidden;
+    z-index: 0;
+}
+
+    .pv-live-preview-iframe.is-active {
+        visibility: visible;
+        z-index: 1;
+    }
+
+/* Rozměry maket (zkráceno pro přehlednost, funkčně stejné) */
+.pv-device-mockup[data-device="fluid"] {
+    /* Fluid vyplňuje plátno – zde rámeček naopak nesmí přetéct přes 100 % */
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #ddd;
+    box-shadow: none;
+}
+
+.pv-device-mockup[data-device="mobile-p"] {
+    width: 375px;
+    height: 667px;
+    border: 12px solid #222;
+    border-radius: 36px;
+    border-width: 40px 12px;
+}
+
+.pv-device-mockup[data-device="mobile-l"] {
+    width: 667px;
+    height: 375px;
+    border: 12px solid #222;
+    border-radius: 36px;
+    border-width: 12px 40px;
+}
+
+.pv-device-mockup[data-device="tablet-p"] {
+    width: 768px;
+    height: 1024px;
+    border: 24px solid #222;
+    border-radius: 24px;
+}
+
+.pv-device-mockup[data-device="tablet-l"] {
+    width: 1024px;
+    height: 768px;
+    border: 24px solid #222;
+    border-radius: 24px;
+}
+
+/* Vlastní rozměr – hodnoty nastavuje JS přes CSS proměnné (CSSOM, projde i při CSP) */
+.pv-device-mockup[data-device="custom"] {
+    width: var(--pv-lp-custom-width, 412px);
+    height: var(--pv-lp-custom-height, 915px);
+    border: 12px solid #222;
+    border-radius: 24px;
+}
+
+.pv-device-mockup[data-device="laptop"] {
+    width: 1366px;
+    height: 768px;
+    border: 16px solid #1a1a1a;
+    border-radius: 12px 12px 0 0;
+    border-bottom: 24px solid #333;
+}
+
+.pv-device-mockup[data-device="desktop"] {
+    width: 1920px;
+    height: 1080px;
+    border: 20px solid #111;
+    border-radius: 12px;
+    margin-bottom: 80px;
+}
+
+    .pv-device-mockup[data-device="desktop"]::after {
+        content: '';
+        position: absolute;
+        bottom: -80px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 250px;
+        height: 80px;
+        background: linear-gradient(to bottom, #333 0%, #222 100%);
+        clip-path: polygon(15% 0, 85% 0, 100% 100%, 0% 100%);
+    }
+
+/* 5. SAMOSTATNÉ OKNO NÁHLEDU (Views/LivePreview/Window.cshtml)
+   Plocha přes celé okno: nahoře případný validační pruh, pod ním iframy.
+   Viewport stránky = velikost okna (zařízení se simuluje změnou velikosti okna). */
+html:has(body.pv-lp-window),
+body.pv-lp-window {
+    height: 100%;
+}
+
+body.pv-lp-window {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #fff;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+    body.pv-lp-window .pv-live-preview-stage {
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+
+    /* Iframy přes celou plochu (výchozí styl je pro maketu v panelu) */
+    body.pv-lp-window .pv-live-preview-iframe {
+        border: 0;
+    }
+
+/* Hláška před připojením editoru / u okna otevřeného přímo */
+.pv-lp-window-message {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+    color: #6c757d;
+    background: #fff;
+    font-size: 15px;
+}
+
+    /* Atribut hidden nesmí přebít display: flex výše */
+    .pv-lp-window-message[hidden],
+    body.pv-lp-window.is-connected .pv-lp-window-waiting {
+        display: none;
+    }
+
+/* V okně není Bootstrap – minimální náhrada pro spinner ve stavové zprávě */
+body.pv-lp-window .spinner-border {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border: .15em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: pv-lp-spin .75s linear infinite;
+}
+
+body.pv-lp-window .me-2 {
+    margin-right: .5rem;
+}
+
+@keyframes pv-lp-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 6. LIŠTA V EDITORU, KDYŽ JE NÁHLED V SAMOSTATNÉM OKNĚ (zobrazení řídí atribut hidden) */
+.pv-lp-detached-bar {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    max-width: calc(100vw - 60px);
+    padding: 10px 14px;
+    border-radius: .5rem;
+    background: var(--bs-body-bg, #fff);
+    color: var(--bs-body-color, #212529);
+    border: 1px solid var(--bs-border-color, #dee2e6);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    font-size: 14px;
+}
+
+    .pv-lp-detached-bar[hidden] {
+        display: none;
+    }

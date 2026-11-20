@@ -1,0 +1,19 @@
+# Build output
+bin/
+obj/
+
+# Visual Studio / Rider / VS Code
+.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+*.userprefs
+
+# Internal development notes (kept locally, not published)
+CodeReview.md
+Roadmap.md
+
+# OS
+Thumbs.db
+.DS_Store

@@ -1,0 +1,18 @@
+@* Vyrenderovaný shape položky obsahu (display type "Detail" nebo "Summary").
+   Layout se tu záměrně nenastavuje: OrchardCore obalí view layoutem aktivního tématu.
+   Frontendové téma (ne admin) se použije proto, že route LivePreviewControlleru
+   (api/pv-live-preview/...) neleží pod /Admin a controller nemá atribut [Admin].
+   Pokud by se route přesunula pod /Admin, náhled by se vykreslil v admin tématu. *@
+
+@if (ViewData[PV.LivePreview.Controllers.LivePreviewController.DisplayTypeViewDataKey] as string == "Summary")
+{
+    @* Summary se na webu zobrazuje ve výpisu (karta článku apod.). Samotná by se v layoutu
+       tématu roztáhla přes celou šířku – container ji umístí jako na běžné stránce. *@
+    <div class="container my-5 pv-live-preview-summary">
+        @await DisplayAsync(Model)
+    </div>
+}
+else
+{
+    @await DisplayAsync(Model)
+}

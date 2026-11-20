@@ -1,0 +1,36 @@
+@using System.Globalization
+@{
+    // Samostatné okno náhledu (bod 4 roadmapy). Bez layoutu tématu – jen plocha přes celé okno.
+    // Iframy, stavovou zprávu, upozornění i validační pruh ovládá skript editoru,
+    // který okno otevřel (stejný origin). Bez inline skriptů a stylů – projde i přes CSP.
+    Layout = null;
+
+    // Stejný sandbox jako iframy v panelu editoru (pv-live-preview.js, PREVIEW_SANDBOX)
+    const string Sandbox = "allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox";
+}
+<!DOCTYPE html>
+<html lang="@CultureInfo.CurrentUICulture.Name">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>@T["Live Preview"]</title>
+    <style asp-name="PV.LivePreview"></style>
+    <script asp-name="PV.LivePreview.Window" at="Foot"></script>
+    <resources type="Header" />
+</head>
+<body class="pv-lp-window">
+    <div class="pv-lp-window-message pv-lp-window-waiting">@T["Connecting to the content editor…"]</div>
+    <div class="pv-lp-window-message pv-lp-window-orphan" hidden>@T["This window works only when it is opened from the content editor (the Open in a separate window button in the live preview toolbar)."]</div>
+
+    <div class="pv-live-preview-validation" role="alert" hidden></div>
+    <div class="pv-live-preview-stage pv-lp-window-stage">
+        <div class="pv-live-preview-status" role="status" aria-live="polite"></div>
+        <div class="pv-live-preview-notice" role="status" aria-live="polite"></div>
+        <iframe class="pv-live-preview-iframe is-active" sandbox="@Sandbox" title="@T["Live Preview"]"></iframe>
+        <iframe class="pv-live-preview-iframe" sandbox="@Sandbox" aria-hidden="true" tabindex="-1"></iframe>
+    </div>
+
+    <resources type="Footer" />
+</body>
+</html>

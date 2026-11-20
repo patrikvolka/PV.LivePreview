@@ -1,0 +1,99 @@
+@using PV.LivePreview.Models
+@using PV.LivePreview.ViewModels
+@model LivePreviewContentTypesViewModel
+
+@* Hromadné nastavení pozice živého náhledu. Skript (výběr všech, počet vybraných)
+   je statický soubor – bez inline skriptu, projde i při zapnutém CSP.
+   Pozor: text se zástupným {0} bez argumentu (T["… {0}"]) vyhodí při vykreslení
+   FormatException – šablonu pro skript proto předáváme jako T["… {0}", "{0}"]. *@
+<script asp-name="PV.LivePreview.Admin" at="Foot"></script>
+
+<zone Name="Title"><h1>@RenderTitleSegments(T["Live Preview"])</h1></zone>
+
+<p class="text-body-secondary">
+    @T["Set where the live preview is shown when editing content, for several content types at once. The position of a single content type can also be changed in its editor."]
+</p>
+
+@if (Model.ContentTypes.Count == 0)
+{
+    <div class="alert alert-info">@T["There are no content types yet."]</div>
+    return;
+}
+
+<form asp-action="Index" method="post" class="pv-lp-admin">
+    <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+        <label for="pv-lp-bulk-position" class="form-label mb-0">@T["Position for the selected content types:"]</label>
+        <select name="@nameof(LivePreviewBulkUpdateModel.Position)" id="pv-lp-bulk-position" class="form-select w-auto">
+            <option value="@LivePreviewPosition.Right" selected>@T["Right Side"]</option>
+            <option value="@LivePreviewPosition.Left">@T["Left Side"]</option>
+            <option value="@LivePreviewPosition.Bottom">@T["Bottom"]</option>
+            <option value="@LivePreviewPosition.None">@T["Disabled (None)"]</option>
+        </select>
+        <button type="submit" class="btn btn-primary pv-lp-bulk-submit">@T["Apply to selected"]</button>
+        <span class="text-body-secondary pv-lp-selected-count" aria-live="polite" data-template="@T["Selected: {0}", "{0}"]"></span>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        <input type="checkbox" class="form-check-input pv-lp-select-all" aria-label="@T["Select all"]" />
+                    </th>
+                    <th scope="col">@T["Content type"]</th>
+                    <th scope="col">@T["Stereotype"]</th>
+                    <th scope="col">@T["Current position"]</th>
+                    <th scope="col"><span class="visually-hidden">@T["Actions"]</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var type in Model.ContentTypes)
+                {
+                    var checkboxId = $"pv-lp-type-{type.Name}";
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="form-check-input pv-lp-select" id="@checkboxId"
+                                   name="@nameof(LivePreviewBulkUpdateModel.SelectedTypes)" value="@type.Name" />
+                        </td>
+                        <td>
+                            <label for="@checkboxId" class="mb-0">
+                                <strong>@type.DisplayName</strong>
+                                @if (type.DisplayName != type.Name)
+                                {
+                                    <small class="text-body-secondary ms-1">@type.Name</small>
+                                }
+                            </label>
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(type.Stereotype))
+                            {
+                                <span class="badge text-bg-light border">@type.Stereotype</span>
+                            }
+                        </td>
+                        <td>
+                            @switch (type.Position)
+                            {
+                                case LivePreviewPosition.Left:
+                                    <span class="badge text-bg-primary">@T["Left Side"]</span>
+                                    break;
+                                case LivePreviewPosition.Right:
+                                    <span class="badge text-bg-primary">@T["Right Side"]</span>
+                                    break;
+                                case LivePreviewPosition.Bottom:
+                                    <span class="badge text-bg-primary">@T["Bottom"]</span>
+                                    break;
+                                default:
+                                    <span class="badge text-bg-secondary">@T["Disabled (None)"]</span>
+                                    break;
+                            }
+                        </td>
+                        <td class="text-end">
+                            <a asp-area="OrchardCore.ContentTypes" asp-controller="Admin" asp-action="Edit" asp-route-id="@type.Name"
+                               class="btn btn-sm btn-secondary">@T["Edit type"]</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</form>

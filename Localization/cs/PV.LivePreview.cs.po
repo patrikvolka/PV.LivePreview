@@ -1,0 +1,687 @@
+# Czech translations for PV.LivePreview
+# Kopie tohoto souboru je i v PV.MyWeb/Localization/cs/PV.LivePreview.cs.po – udržujte je shodné.
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Project-Id-Version: PV.LivePreview 3.0.1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: Czech\n"
+"Language: cs_CZ\n"
+"PO-Revision-Date: 2026-11-20 12:00\n"
+
+# Controllers texts
+#: PV.LivePreview\Controllers\LivePreviewController.cs
+msgctxt "PV.LivePreview.Controllers.LivePreviewController"
+msgid "Unable to determine ContentType from the sent data."
+msgstr "Nepodařilo se zjistit typ obsahu z odeslaných dat."
+
+#: PV.LivePreview\Controllers\LivePreviewController.cs
+msgctxt "PV.LivePreview.Controllers.LivePreviewController"
+msgid "Live preview is not enabled for this content type."
+msgstr "Živý náhled není pro tento typ obsahu povolen."
+
+# Views texts
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Fluid (Responsive)"
+msgstr "Fluid (Responzivní)"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Mobile (375x667)"
+msgstr "Mobil (375x667)"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Tablet (768x1024)"
+msgstr "Tablet (768x1024)"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Laptop (1366x768)"
+msgstr "Laptop (1366x768)"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Desktop (1920x1080)"
+msgstr "Desktop (1920x1080)"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Fullscreen"
+msgstr "Celá obrazovka"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Exit Fullscreen"
+msgstr "Ukončit celou obrazovku"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Hide Live Preview"
+msgstr "Skrýt živý náhled"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Drag to resize, double-click to reset"
+msgstr "Tažením změníte šířku, dvojklikem obnovíte výchozí"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Show Live Preview"
+msgstr "Zobrazit živý náhled"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Loading preview..."
+msgstr "Načítání náhledu..."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "An error occurred while loading the preview."
+msgstr "Při načítání náhledu došlo k chybě."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Your session has expired. Reload the page and sign in again."
+msgstr "Vaše přihlášení vypršelo. Obnovte stránku a přihlaste se znovu."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "You do not have permission to preview this content."
+msgstr "Nemáte oprávnění zobrazit náhled tohoto obsahu."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Help"
+msgstr "Nápověda"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Scroll to changes"
+msgstr "Posunout na změny"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Scroll to changes – after each update the preview scrolls to the first changed place and briefly highlights it. Click the button to turn it off or on."
+msgstr "Posunout na změny – po každé aktualizaci se náhled posune na první změněné místo a krátce ho zvýrazní. Tlačítkem funkci vypnete nebo zapnete."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Form submission is disabled in the preview."
+msgstr "Odeslání formuláře je v náhledu vypnuté."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Links in the preview open in a new tab, so the preview stays in place. Links to a part of the page only scroll the preview. Forms in the preview cannot be submitted."
+msgstr "Odkazy se z náhledu otevírají v nové záložce, takže náhled zůstane na místě. Odkazy na část stránky náhled jen posunou. Formuláře v náhledu odeslat nejdou."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "The content contains errors and cannot be saved in this state:"
+msgstr "Obsah obsahuje chyby a v tomto stavu ho nepůjde uložit:"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "If the content contains errors (for example, the URL is already used by another item), a yellow bar with their list appears above the preview. The preview is still rendered, but the content cannot be saved until the errors are fixed."
+msgstr "Pokud obsah obsahuje chyby (např. URL už používá jiná položka), nad náhledem se objeví žlutý pruh s jejich seznamem. Náhled se vykreslí i tak, ale obsah nepůjde uložit, dokud chyby neopravíte."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Automatic update"
+msgstr "Automatická aktualizace"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Refresh preview"
+msgstr "Obnovit náhled"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Refresh preview – there are changes not shown yet"
+msgstr "Obnovit náhled – jsou tu změny, které náhled ještě neukazuje"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Automatic update – when turned off, the preview is refreshed only with the Refresh button. Useful for demanding pages and when writing long texts."
+msgstr "Automatická aktualizace – když je vypnutá, náhled se obnoví jen tlačítkem Obnovit. Hodí se u náročných stránek a při psaní dlouhých textů."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Refresh – renders the preview again. With automatic update turned off, the button turns yellow when the form contains changes the preview does not show yet."
+msgstr "Obnovit – znovu vykreslí náhled. Při vypnuté automatické aktualizaci tlačítko zežloutne, když formulář obsahuje změny, které náhled ještě neukazuje."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Keyboard shortcuts"
+msgstr "Klávesové zkratky"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Hide / show the preview"
+msgstr "Skrýt / zobrazit náhled"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Switch the device (in the order of the toolbar buttons)"
+msgstr "Přepnout zařízení (v pořadí tlačítek v toolbaru)"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Fullscreen on / off"
+msgstr "Zapnout / vypnout celou obrazovku"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Exit fullscreen"
+msgstr "Ukončit celou obrazovku"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Live Preview – Help"
+msgstr "Živý náhled – nápověda"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Close"
+msgstr "Zavřít"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "The preview shows the edited content as it will look on the website. It refreshes automatically shortly after you change any field – you do not need to save the content. The preview itself never saves or publishes anything."
+msgstr "Náhled ukazuje upravovaný obsah tak, jak bude vypadat na webu. Obnoví se automaticky chvíli po změně kteréhokoli pole – obsah není potřeba ukládat. Samotný náhled nic neukládá ani nepublikuje."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Devices"
+msgstr "Zařízení"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Fluid – the page fills the whole preview panel."
+msgstr "Fluid – stránka vyplní celý panel náhledu."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Mobile, tablet, laptop and desktop – the page is rendered at the exact resolution of the device. If the device does not fit into the panel, it is scaled down."
+msgstr "Mobil, tablet, laptop a desktop – stránka se vykreslí v přesném rozlišení daného zařízení. Pokud se zařízení do panelu nevejde, zobrazí se zmenšené."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Custom size – enter the width and height of the device you want to test, for example 412 × 915."
+msgstr "Vlastní rozměr – zadejte šířku a výšku zařízení, které chcete vyzkoušet, např. 412 × 915."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Rotate – switches mobile and tablet between portrait and landscape; for a custom size it swaps the width and height."
+msgstr "Otočit – přepne mobil a tablet mezi orientací na výšku a na šířku; u vlastního rozměru prohodí šířku a výšku."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Custom size"
+msgstr "Vlastní rozměr"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Width"
+msgstr "Šířka"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Height"
+msgstr "Výška"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Rotate (portrait / landscape)"
+msgstr "Otočit (na výšku / na šířku)"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Rotate the device"
+msgstr "Otočit zařízení"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Panel"
+msgstr "Panel"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Fullscreen – expands the preview over the whole screen. Press Esc or the same button to return."
+msgstr "Celá obrazovka – roztáhne náhled přes celou obrazovku. Zpět se vrátíte klávesou Esc nebo stejným tlačítkem."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Hide – hides the preview and gives the form the full width. Bring it back with the Show Live Preview button in the bottom right corner."
+msgstr "Skrýt – schová náhled a formulář dostane celou šířku. Zpět ho zobrazíte tlačítkem Zobrazit živý náhled vpravo dole."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Drag the edge of the panel next to the form to change its width, double-click it to restore the default. The width is remembered in this browser."
+msgstr "Tažením okraje panelu u formuláře změníte jeho šířku, dvojklikem obnovíte výchozí. Šířka se pamatuje v tomto prohlížeči."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Drag the bottom right corner of the panel to change its height."
+msgstr "Tažením pravého dolního rohu panelu změníte jeho výšku."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Your choices are remembered in this browser: the device and its orientation (separately for each content type), the custom size, the scale, the display type (separately for each content type), whether the preview is hidden or in fullscreen, automatic update and scrolling to changes."
+msgstr "Vaše volby se pamatují v tomto prohlížeči: zařízení a jeho orientace (zvlášť pro každý typ obsahu), vlastní rozměr, měřítko, zobrazení Detail / Souhrn (zvlášť pro každý typ obsahu), skrytí náhledu nebo celá obrazovka, automatická aktualizace a posun na změny."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Time of the last preview update"
+msgstr "Čas poslední aktualizace náhledu"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Server"
+msgstr "Server"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Server response time – from sending the form to receiving the rendered page"
+msgstr "Odezva serveru – od odeslání formuláře po přijetí vykreslené stránky"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Load"
+msgstr "Načtení"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Page load time in the preview – styles, scripts and images of the theme"
+msgstr "Doba načtení stránky v náhledu – styly, skripty a obrázky tématu"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Viewport of the preview (width × height in CSS pixels) and its current scale"
+msgstr "Viewport náhledu (šířka × výška v CSS pixelech) a jeho aktuální měřítko"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "The bar under the toolbar shows the time of the last update, the server response time, the page load time in the preview and the viewport with its scale. Times that are too long are highlighted in red – useful when tuning the performance of the theme templates."
+msgstr "Lišta pod toolbarem ukazuje čas poslední aktualizace, odezvu serveru, dobu načtení stránky v náhledu a viewport s měřítkem. Příliš dlouhé časy jsou zvýrazněné červeně – hodí se při ladění výkonu šablon tématu."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Scale: fit to panel / 100 %"
+msgstr "Měřítko: přizpůsobit panelu / 100 %"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Scale – shows the current scale of the device. Click to switch between fitting the device into the panel and its real size (100 %) with scrollbars, which is useful for checking details."
+msgstr "Měřítko – ukazuje aktuální měřítko zařízení. Kliknutím přepnete mezi přizpůsobením panelu a skutečnou velikostí (100 %) s posuvníky, která se hodí pro kontrolu detailů."
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "Live Preview Position"
+msgstr "Pozice živého náhledu"
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "Disabled (None)"
+msgstr "Vypnuto"
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "Left Side"
+msgstr "Vlevo"
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "Right Side"
+msgstr "Vpravo"
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "Bottom"
+msgstr "Dole"
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "Select where the responsive live preview should be rendered during content editing."
+msgstr "Vyberte, kde se má během úprav obsahu zobrazit responzivní živý náhled."
+
+# Hromadné nastavení (Vzhled → Definice obsahu → Živý náhled)
+#: PV.LivePreview\AdminMenu.cs
+msgctxt "PV.LivePreview.AdminMenu"
+msgid "Design"
+msgstr "Vzhled"
+
+#: PV.LivePreview\AdminMenu.cs
+msgctxt "PV.LivePreview.AdminMenu"
+msgid "Content Definition"
+msgstr "Definice obsahu"
+
+#: PV.LivePreview\AdminMenu.cs
+msgctxt "PV.LivePreview.AdminMenu"
+msgid "Live Preview"
+msgstr "Živý náhled"
+
+#: PV.LivePreview\Controllers\AdminController.cs
+msgctxt "PV.LivePreview.Controllers.AdminController"
+msgid "Select at least one content type."
+msgstr "Vyberte alespoň jeden typ obsahu."
+
+#: PV.LivePreview\Controllers\AdminController.cs
+msgctxt "PV.LivePreview.Controllers.AdminController"
+msgid "Live preview position has been saved. Number of changed content types: {0}."
+msgstr "Pozice živého náhledu byla uložena. Počet změněných typů obsahu: {0}."
+
+#: PV.LivePreview\Views\Admin\Index.cshtml
+msgctxt "PV.LivePreview.Views.Admin.Index"
+msgid "Live Preview"
+msgstr "Živý náhled"
+
+#: PV.LivePreview\Views\Admin\Index.cshtml
+msgctxt "PV.LivePreview.Views.Admin.Index"
+msgid "Set where the live preview is shown when editing content, for several content types at once. The position of a single content type can also be changed in its editor."
+msgstr "Nastavte, kde se při úpravách obsahu zobrazí živý náhled, pro více typů obsahu najednou. Pozici jednoho typu obsahu lze změnit i v jeho editoru."
+
+#: PV.LivePreview\Views\Admin\Index.cshtml
+msgctxt "PV.LivePreview.Views.Admin.Index"
+msgid "There are no content types yet."
+msgstr "Zatím neexistují žádné typy obsahu."
+
+#: PV.LivePreview\Views\Admin\Index.cshtml
+msgctxt "PV.LivePreview.Views.Admin.Index"
+msgid "Position for the selected content types:"
+msgstr "Pozice pro vybrané typy obsahu:"
+
+#: PV.LivePreview\Views\Admin\Index.cshtml
+msgctxt "PV.LivePreview.Views.Admin.Index"
+msgid "Right Side"
+msgstr "Vpravo"
+
+#: PV.LivePreview\Views\Admin\Index.cshtml
+msgctxt "PV.LivePreview.Views.Admin.Index"
+msgid "Left Side"
+msgstr "Vlevo"
+
+#: PV.LivePreview\Views\Admin\Index.cshtml
+msgctxt "PV.LivePreview.Views.Admin.Index"
+msgid "Bottom"
+msgstr "Dole"
+
+#: PV.LivePreview\Views\Admin\Index.cshtml
+msgctxt "PV.LivePreview.Views.Admin.Index"
+msgid "Disabled (None)"
+msgstr "Vypnuto"
+
+#: PV.LivePreview\Views\Admin\Index.cshtml
+msgctxt "PV.LivePreview.Views.Admin.Index"
+msgid "Apply to selected"
+msgstr "Použít na vybrané"
+
+#: PV.LivePreview\Views\Admin\Index.cshtml
+msgctxt "PV.LivePreview.Views.Admin.Index"
+msgid "Selected: {0}"
+msgstr "Vybráno: {0}"
+
+#: PV.LivePreview\Views\Admin\Index.cshtml
+msgctxt "PV.LivePreview.Views.Admin.Index"
+msgid "Select all"
+msgstr "Vybrat vše"
+
+#: PV.LivePreview\Views\Admin\Index.cshtml
+msgctxt "PV.LivePreview.Views.Admin.Index"
+msgid "Content type"
+msgstr "Typ obsahu"
+
+#: PV.LivePreview\Views\Admin\Index.cshtml
+msgctxt "PV.LivePreview.Views.Admin.Index"
+msgid "Stereotype"
+msgstr "Stereotyp"
+
+#: PV.LivePreview\Views\Admin\Index.cshtml
+msgctxt "PV.LivePreview.Views.Admin.Index"
+msgid "Current position"
+msgstr "Aktuální pozice"
+
+#: PV.LivePreview\Views\Admin\Index.cshtml
+msgctxt "PV.LivePreview.Views.Admin.Index"
+msgid "Actions"
+msgstr "Akce"
+
+#: PV.LivePreview\Views\Admin\Index.cshtml
+msgctxt "PV.LivePreview.Views.Admin.Index"
+msgid "Edit type"
+msgstr "Upravit typ"
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "To set several content types at once, use"
+msgstr "Pro nastavení více typů obsahu najednou použijte"
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "Content Definition → Live Preview"
+msgstr "Definice obsahu → Živý náhled"
+
+# Rozšířené nastavení typu obsahu (bod 6 roadmapy)
+#: PV.LivePreview\Drivers\LivePreviewSettingsDriver.cs
+msgctxt "PV.LivePreview.Drivers.LivePreviewSettingsDriver"
+msgid "The live preview position is not valid."
+msgstr "Pozice živého náhledu není platná."
+
+#: PV.LivePreview\Drivers\LivePreviewSettingsDriver.cs
+msgctxt "PV.LivePreview.Drivers.LivePreviewSettingsDriver"
+msgid "The update delay must be between {0} and {1} ms."
+msgstr "Zpoždění aktualizace musí být mezi {0} a {1} ms."
+
+#: PV.LivePreview\Drivers\LivePreviewSettingsDriver.cs
+msgctxt "PV.LivePreview.Drivers.LivePreviewSettingsDriver"
+msgid "Select at least one device or define a custom device."
+msgstr "Vyberte alespoň jedno zařízení nebo definujte vlastní zařízení."
+
+#: PV.LivePreview\Drivers\LivePreviewSettingsDriver.cs
+msgctxt "PV.LivePreview.Drivers.LivePreviewSettingsDriver"
+msgid "Custom devices, line {0}: use the format \"Name; width x height\", for example \"Galaxy S20; 412x915\"."
+msgstr "Vlastní zařízení, řádek {0}: použijte formát \"Název; šířka x výška\", např. \"Galaxy S20; 412x915\"."
+
+#: PV.LivePreview\Drivers\LivePreviewSettingsDriver.cs
+msgctxt "PV.LivePreview.Drivers.LivePreviewSettingsDriver"
+msgid "Custom devices, line {0}: the name can have at most {1} characters."
+msgstr "Vlastní zařízení, řádek {0}: název může mít nejvýš {1} znaků."
+
+#: PV.LivePreview\Drivers\LivePreviewSettingsDriver.cs
+msgctxt "PV.LivePreview.Drivers.LivePreviewSettingsDriver"
+msgid "Custom devices, line {0}: the width and height must be between {1} and {2} px."
+msgstr "Vlastní zařízení, řádek {0}: šířka i výška musí být mezi {1} a {2} px."
+
+#: PV.LivePreview\Drivers\LivePreviewSettingsDriver.cs
+msgctxt "PV.LivePreview.Drivers.LivePreviewSettingsDriver"
+msgid "Custom devices, line {0}: the name \"{1}\" is used more than once."
+msgstr "Vlastní zařízení, řádek {0}: název \"{1}\" je použitý víckrát."
+
+#: PV.LivePreview\Drivers\LivePreviewSettingsDriver.cs
+msgctxt "PV.LivePreview.Drivers.LivePreviewSettingsDriver"
+msgid "You can define at most {0} custom devices."
+msgstr "Vlastních zařízení může být nejvýš {0}."
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "Fluid (Responsive)"
+msgstr "Fluid (Responzivní)"
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "Mobile (375x667)"
+msgstr "Mobil (375x667)"
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "Tablet (768x1024)"
+msgstr "Tablet (768x1024)"
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "Laptop (1366x768)"
+msgstr "Laptop (1366x768)"
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "Desktop (1920x1080)"
+msgstr "Desktop (1920x1080)"
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "Custom size (entered by the user)"
+msgstr "Vlastní rozměr (zadává uživatel)"
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "Devices shown in the toolbar"
+msgstr "Zařízení zobrazená v toolbaru"
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "Custom devices"
+msgstr "Vlastní zařízení"
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "One device per line in the format \"Name; width x height\", for example \"Galaxy S20; 412x915\". Each device gets its own button in the toolbar and can be rotated."
+msgstr "Jedno zařízení na řádek ve formátu \"Název; šířka x výška\", např. \"Galaxy S20; 412x915\". Každé zařízení dostane v toolbaru vlastní tlačítko a lze ho otočit."
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "Default device"
+msgstr "Výchozí zařízení"
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "Laptop (default)"
+msgstr "Laptop (výchozí)"
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "Used when the user has not chosen a device for this content type yet. Newly added custom devices appear here after saving. If the default device is not shown in the toolbar, the first shown device is used."
+msgstr "Použije se, pokud si uživatel pro tento typ obsahu ještě nezvolil zařízení. Nově přidaná vlastní zařízení se zde objeví po uložení. Pokud výchozí zařízení není zobrazené v toolbaru, použije se první zobrazené."
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "Update delay (ms)"
+msgstr "Zpoždění aktualizace (ms)"
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "How long to wait after the last change in the form before the preview is refreshed. A longer delay reduces the load on the server for demanding pages."
+msgstr "Jak dlouho po poslední změně ve formuláři počkat, než se náhled obnoví. Delší zpoždění snižuje zátěž serveru u náročných stránek."
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "Hidden when the editor is opened"
+msgstr "Při otevření editace skrytý"
+
+#: PV.LivePreview\Views\LivePreviewSettings_Edit.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewSettings_Edit"
+msgid "The preview is rendered only after the user shows it. Suitable for content types whose rendering is demanding."
+msgstr "Náhled se vykreslí, až ho uživatel zobrazí. Vhodné pro typy obsahu s náročným vykreslením."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Devices with a name – custom devices defined for this content type by the administrator."
+msgstr "Zařízení s názvem – vlastní zařízení, která pro tento typ obsahu nastavil správce."
+
+# Volba display typu (bod 7 roadmapy)
+#: PV.LivePreview\Controllers\LivePreviewController.cs
+msgctxt "PV.LivePreview.Controllers.LivePreviewController"
+msgid "This display type is not allowed in the preview."
+msgstr "Tento způsob zobrazení není v náhledu povolen."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Display type: Detail / Summary (how the item looks in a list)"
+msgstr "Zobrazení: Detail / Souhrn (jak položka vypadá ve výpisu)"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Detail"
+msgstr "Detail"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Summary"
+msgstr "Souhrn"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Detail / Summary – switches between the detail page of the item and its summary, i.e. how the item looks in a list (for example an article card on a blog)."
+msgstr "Detail / Souhrn – přepíná mezi stránkou detailu položky a jejím souhrnem, tedy jak položka vypadá ve výpisu (např. karta článku na blogu)."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Display type: Detail / Summary"
+msgstr "Zobrazení: Detail / Souhrn"
+
+# Náhled ve správném jazyce (bod 8 roadmapy)
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Language (culture) in which the preview was rendered – the culture of the content item"
+msgstr "Jazyk (kultura), ve kterém se náhled vykreslil – kultura položky obsahu"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Multilingual content is rendered in the language of the content item, so the theme texts match the language of the page. The language is shown in the bar with the globe icon."
+msgstr "Vícejazyčný obsah se vykresluje v jazyce položky obsahu, takže texty tématu odpovídají jazyku stránky. Jazyk je v liště u ikony zeměkoule."
+
+# Samostatné okno náhledu (bod 4 roadmapy)
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Open in a separate window"
+msgstr "Otevřít v samostatném okně"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Live preview is open in a separate window."
+msgstr "Živý náhled je otevřený v samostatném okně."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Show window"
+msgstr "Zobrazit okno"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Return to panel"
+msgstr "Vrátit do panelu"
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "The browser blocked the new window. Allow pop-up windows for this site."
+msgstr "Prohlížeč nové okno zablokoval. Povolte pro tento web vyskakovací okna."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Separate window – opens the preview in its own window, for example on a second monitor. The viewport is the size of the window, the form gets the full width. Closing the window returns the preview to the panel."
+msgstr "Samostatné okno – otevře náhled ve vlastním okně, např. na druhém monitoru. Viewport má velikost okna a formulář dostane celou šířku. Zavřením okna se náhled vrátí do panelu."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Separate window: open / return to the panel"
+msgstr "Samostatné okno: otevřít / vrátit do panelu"
+
+#: PV.LivePreview\Views\LivePreview\Window.cshtml
+msgctxt "PV.LivePreview.Views.LivePreview.Window"
+msgid "Live Preview"
+msgstr "Živý náhled"
+
+#: PV.LivePreview\Views\LivePreview\Window.cshtml
+msgctxt "PV.LivePreview.Views.LivePreview.Window"
+msgid "Connecting to the content editor…"
+msgstr "Připojování k editoru obsahu…"
+
+#: PV.LivePreview\Views\LivePreview\Window.cshtml
+msgctxt "PV.LivePreview.Views.LivePreview.Window"
+msgid "This window works only when it is opened from the content editor (the Open in a separate window button in the live preview toolbar)."
+msgstr "Toto okno funguje jen po otevření z editoru obsahu (tlačítko Otevřít v samostatném okně v toolbaru živého náhledu)."
+
+#: PV.LivePreview\Views\LivePreviewInjection.cshtml
+msgctxt "PV.LivePreview.Views.LivePreviewInjection"
+msgid "Visit the author’s website"
+msgstr "Navštívit web autora"

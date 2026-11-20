@@ -1,0 +1,6 @@
+# Normalize line endings in the repository, check out with the platform's native endings
+* text=auto
+
+# Minified assets are generated on build – treat as binary in diffs
+*.min.js  -diff
+*.min.css -diff

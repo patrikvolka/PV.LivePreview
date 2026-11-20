@@ -1,0 +1,85 @@
+@using PV.LivePreview.Models
+@using PV.LivePreview.ViewModels
+@model LivePreviewSettingsViewModel
+
+@{
+    var deviceLabels = new Dictionary<string, string>
+    {
+        [LivePreviewDevices.Fluid] = T["Fluid (Responsive)"].Value,
+        [LivePreviewDevices.Mobile] = T["Mobile (375x667)"].Value,
+        [LivePreviewDevices.Tablet] = T["Tablet (768x1024)"].Value,
+        [LivePreviewDevices.Laptop] = T["Laptop (1366x768)"].Value,
+        [LivePreviewDevices.Desktop] = T["Desktop (1920x1080)"].Value,
+        [LivePreviewDevices.Custom] = T["Custom size (entered by the user)"].Value,
+    };
+    var selectedDevices = new HashSet<string>(Model.Devices ?? []);
+}
+
+<div class="mb-3">
+    <label asp-for="Position" class="form-label">@T["Live Preview Position"]</label>
+    <select asp-for="Position" class="form-select">
+        <option value="@LivePreviewPosition.None">@T["Disabled (None)"]</option>
+        <option value="@LivePreviewPosition.Left">@T["Left Side"]</option>
+        <option value="@LivePreviewPosition.Right">@T["Right Side"]</option>
+        <option value="@LivePreviewPosition.Bottom">@T["Bottom"]</option>
+    </select>
+    <span asp-validation-for="Position"></span>
+    <span class="hint">@T["Select where the responsive live preview should be rendered during content editing."]</span>
+    <span class="hint d-block">
+        @T["To set several content types at once, use"]
+        <a asp-area="PV.LivePreview" asp-controller="Admin" asp-action="Index">@T["Content Definition → Live Preview"]</a>.
+    </span>
+</div>
+
+@* Další volby mají smysl jen se zapnutým náhledem, formulář je ale kvůli jednoduchosti
+   (bez vlastního JS v editoru typu) zobrazuje vždy *@
+<fieldset class="mb-3">
+    <legend class="form-label fs-6">@T["Devices shown in the toolbar"]</legend>
+    @foreach (var device in LivePreviewDevices.BuiltIn)
+    {
+        var id = Html.IdFor(m => m.Devices) + "_" + device;
+        <div class="form-check form-check-inline">
+            <input type="checkbox" class="form-check-input" id="@id" name="@Html.NameFor(m => m.Devices)" value="@device" checked="@selectedDevices.Contains(device)" />
+            <label class="form-check-label" for="@id">@deviceLabels[device]</label>
+        </div>
+    }
+    <span asp-validation-for="Devices"></span>
+</fieldset>
+
+<div class="mb-3">
+    <label asp-for="CustomDevicesText" class="form-label">@T["Custom devices"]</label>
+    <textarea asp-for="CustomDevicesText" class="form-control font-monospace" rows="3" placeholder="Galaxy S20; 412x915"></textarea>
+    <span asp-validation-for="CustomDevicesText"></span>
+    <span class="hint">@T["One device per line in the format \"Name; width x height\", for example \"Galaxy S20; 412x915\". Each device gets its own button in the toolbar and can be rotated."]</span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="DefaultDevice" class="form-label">@T["Default device"]</label>
+    <select asp-for="DefaultDevice" class="form-select">
+        <option value="">@T["Laptop (default)"]</option>
+        @foreach (var device in LivePreviewDevices.BuiltIn)
+        {
+            <option value="@device">@deviceLabels[device]</option>
+        }
+        @foreach (var device in Model.SavedCustomDevices)
+        {
+            <option value="@(LivePreviewDevices.PresetPrefix + device.Name)">@device.Name (@device.Width×@device.Height)</option>
+        }
+    </select>
+    <span class="hint">@T["Used when the user has not chosen a device for this content type yet. Newly added custom devices appear here after saving. If the default device is not shown in the toolbar, the first shown device is used."]</span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="UpdateDelay" class="form-label">@T["Update delay (ms)"]</label>
+    <input asp-for="UpdateDelay" type="number" class="form-control w-auto" min="@LivePreviewSettings.MinUpdateDelay" max="@LivePreviewSettings.MaxUpdateDelay" step="50" />
+    <span asp-validation-for="UpdateDelay"></span>
+    <span class="hint">@T["How long to wait after the last change in the form before the preview is refreshed. A longer delay reduces the load on the server for demanding pages."]</span>
+</div>
+
+<div class="mb-3">
+    <div class="form-check">
+        <input asp-for="StartHidden" type="checkbox" class="form-check-input" />
+        <label asp-for="StartHidden" class="form-check-label">@T["Hidden when the editor is opened"]</label>
+    </div>
+    <span class="hint">@T["The preview is rendered only after the user shows it. Suitable for content types whose rendering is demanding."]</span>
+</div>
